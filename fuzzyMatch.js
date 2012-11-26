@@ -26,7 +26,7 @@ var fuzzyMatch = {
     }
   },
   fuzzyTailReplace: function (target, search, replace){
-    var result = this.fuzzyTailMatch(search, target);
+    var result = this.fuzzyTailMatch(target, search);
     if(result === false){
       return target;
     }

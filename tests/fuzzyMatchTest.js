@@ -5,7 +5,15 @@ if(typeof exports === 'object'){
 
 describe('fuzzyMatch', function(){
   describe('fuzzyMatch.fuzzyTailMatch', function () {
-    it('should match aaabbb with dddaaaccc only aaa', function(done){
+    it('should match aaa with dddaaaccc only by aaa', function(done){
+      var search = 'aaa';
+      var target = 'dddaaaccc';
+      var result = fuzzyMatch.fuzzyTailMatch(target, search);
+      expect(result).eql({match_length_of_search:3, matched:'aaa', start_index_in_target:3});
+      done();
+    });
+
+    it('should match aaabbb with dddaaaccc only by aaa', function(done){
       var search = 'aaabbb';
       var target = 'dddaaaccc';
       var result = fuzzyMatch.fuzzyTailMatch(target, search);
@@ -13,7 +21,7 @@ describe('fuzzyMatch', function(){
       done();
     });
 
-    it('should match あいうえお:かきくけこ with かきくけこあいうえおさしすせそ, only あいうえお', function(done){
+    it('should match あいうえお:かきくけこ with かきくけこあいうえおさしすせそ, only by あいうえお', function(done){
       var search = 'あいうえお:かきくけこ';
       var target = 'かきくけこあいうえおさしすせそ';
       var result = fuzzyMatch.fuzzyTailMatch(target, search);

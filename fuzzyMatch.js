@@ -1,5 +1,5 @@
 var fuzzyMatch = {
-  fuzzyTailMatch: function (search, target){
+  fuzzyTailMatch: function (target, search){
     var len = search.length;
     var jump = parseInt(len / 2);
     var start_index_in_target = null;
@@ -25,7 +25,7 @@ var fuzzyMatch = {
       }
     }
   },
-  fuzzyTailReplace: function (search, target, replace){
+  fuzzyTailReplace: function (target, search, replace){
     var result = this.fuzzyTailMatch(search, target);
     if(result === false){
       return target;

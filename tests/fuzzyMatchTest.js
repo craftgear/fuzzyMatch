@@ -9,7 +9,7 @@ describe('fuzzyMatch', function(){
       var search = 'aaabbb';
       var target = 'aaaccc';
       var result = fuzzyMatch.fuzzyTailMatch(search, target);
-      expect(result).eql({match_length_of_search:3, matched:'aaa', start_index_in_target:0});
+      expect(result).eql({matched_length_of_search:3, matched:'aaa', start_index_in_target:0});
       done();
     });
 
@@ -17,7 +17,7 @@ describe('fuzzyMatch', function(){
       var search = 'あいうえお:かきくけこ';
       var target = 'かきくけこあいうえおさしすせそ';
       var result = fuzzyMatch.fuzzyTailMatch(search, target);
-      expect(result).eql({match_length_of_search:5, matched:'あいうえお', start_index_in_target:5});
+      expect(result).eql({matched_length_of_search:5, matched:'あいうえお', start_index_in_target:5});
       done();
     });
 
@@ -25,6 +25,14 @@ describe('fuzzyMatch', function(){
       var search = 'aaa';
       var target = 'bbb';
       var result = fuzzyMatch.fuzzyTailMatch(search, target);
+      expect(result).to.be(false);
+      done();
+    });
+
+    it('fuzzyMatch does not match less than minimum_char_length', function (done) {
+      var search = 'Aaaabbbbcc';
+      var target = 'Abcdefghij';
+      var result = fuzzyMatch.fuzzyTailMatch(search, target, 3);
       expect(result).to.be(false);
       done();
     });

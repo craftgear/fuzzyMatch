@@ -1,30 +1,33 @@
 var fuzzyMatch = {
-  fuzzyTailMatch: function (search, target){
+  fuzzyTailMatch: function (search, target, minimum_char_length){
+    if (!minimum_char_length) {
+      minimum_char_length = 3;
+    }
     var len = search.length;
-    var jump = parseInt(len / 2);
+    var jump = parseInt(len / 2, 10);
     var start_index_in_target = null;
-    var match_length_of_search = 0;
-    var loop = true;
-    var i = 0;
-    while(loop){
-      var is_matched = target.indexOf(search.substr(0, match_length_of_search + jump))
+    var matched_length_of_search = 0;
+
+    while(true){
+      var is_matched = target.indexOf(search.substr(0, matched_length_of_search + jump));
       if(is_matched > -1){
-        match_length_of_search = match_length_of_search + jump;
+        matched_length_of_search = matched_length_of_search + jump;
         start_index_in_target = is_matched;
       }
-      jump = parseInt(jump / 2);
+      jump = parseInt(jump / 2, 10);
 
       if(jump === 0){
-        if(match_length_of_search === 0){
+        if(matched_length_of_search === 0 || matched_length_of_search < minimum_char_length){
           return false;
         }
-        if(target.indexOf(search.substr(0, match_length_of_search)) > -1 && target.indexOf(search.substr(0, match_length_of_search + 1)) === -1){
-          return {match_length_of_search: match_length_of_search, matched: search.substr(0, match_length_of_search),start_index_in_target: start_index_in_target };
+        if(target.indexOf(search.substr(0, matched_length_of_search)) > -1 && target.indexOf(search.substr(0, matched_length_of_search + 1)) === -1){
+          return {matched_length_of_search: matched_length_of_search, matched: search.substr(0, matched_length_of_search),start_index_in_target: start_index_in_target };
         }
         jump = 1;
       }
     }
   },
+
   fuzzyTailReplace: function (search, target, replace){
     var result = this.fuzzyTailMatch(search, target);
     if(result === false){

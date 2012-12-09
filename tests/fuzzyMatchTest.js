@@ -29,7 +29,7 @@ describe('fuzzyMatch', function(){
       done();
     });
 
-    it('fuzzyMatch does not match less than minimum_char_length', function (done) {
+    it('should not match less than minimum_char_length', function (done) {
       var search = 'Aaaabbbbcc';
       var target = 'Abcdefghij';
       var result = fuzzyMatch.fuzzyTailMatch(search, target, 3);

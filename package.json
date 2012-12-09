@@ -2,10 +2,13 @@
   "name": "fuzzyMatch",
   "version": "0.0.1",
   "description": "Matching strings with strings partially",
-  "author": "Shunsuke Watanabe <craftgear@gmail.com> (http://blog.craftgear.net)",
+  "author": {
+    "name": "Shunsuke Watanabe",
+    "email": "craftgear@gmail.com"
+  },
   "devDependencies": {
-    "mocha": '*',
-    "expect.js": '*',
-    "testem": '*'
+    "mocha": "*",
+    "expect.js": "*",
+    "testem": "*"
   }
 }

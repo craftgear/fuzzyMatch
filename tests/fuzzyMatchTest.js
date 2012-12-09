@@ -5,7 +5,7 @@ if(typeof exports === 'object'){
 
 describe('fuzzyMatch', function(){
   describe('fuzzyMatch.fuzzyTailMatch', function () {
-    it('should match aaabbb with dddaaaccc only aaa', function(done){
+    it('should match aaabbb with dddaaaccc only by aaa', function(done){
       var search = 'aaabbb';
       var target = 'aaaccc';
       var result = fuzzyMatch.fuzzyTailMatch(search, target);
@@ -13,7 +13,7 @@ describe('fuzzyMatch', function(){
       done();
     });
 
-    it('should match あいうえお:かきくけこ with かきくけこあいうえおさしすせそ, only あいうえお', function(done){
+    it('should match あいうえお:かきくけこ with かきくけこあいうえおさしすせそ, only by あいうえお', function(done){
       var search = 'あいうえお:かきくけこ';
       var target = 'かきくけこあいうえおさしすせそ';
       var result = fuzzyMatch.fuzzyTailMatch(search, target);
@@ -24,7 +24,7 @@ describe('fuzzyMatch', function(){
     it('should not match aaa with bbb', function(done){
       var search = 'aaa';
       var target = 'bbb';
-      var result = fuzzyMatch.fuzzyTailMatch(search, target);
+      var result = fuzzyMatch.fuzzyTailMatch(target, search);
       expect(result).to.be(false);
       done();
     });
@@ -40,8 +40,8 @@ describe('fuzzyMatch', function(){
 
   describe('fuzzyMatch.fuzzyTailReplace', function () {
     it('should replace aaabbb with aaaccc and ddd return dddbbb', function (done) {
-      var result = fuzzyMatch.fuzzyTailReplace('aaaccc', 'aaabbb', 'ddd');
-      expect(result).eql('dddbbb');
+      var result = fuzzyMatch.fuzzyTailReplace('aaaccc', 'cccaaabbb', 'ddd');
+      expect(result).eql('cccdddbbb');
       done();
     });
   });

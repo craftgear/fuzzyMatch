@@ -3,6 +3,16 @@ var fuzzyMatch = {
     if (!minimum_char_length) {
       minimum_char_length = 3;
     }
+    if(search < minimum_char_length){
+      return false;
+    }
+    if(target.indexOf(search) > -1){
+      return {
+        matched_length_of_search: search.length,
+        matched: search,
+        start_index_in_target: target.indexOf(search)
+      };
+    }
     var len = search.length;
     var jump = parseInt(len / 2, 10);
     var start_index_in_target = null;

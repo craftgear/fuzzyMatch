@@ -7,12 +7,12 @@ describe('fuzzyMatch', function() {
   describe('fuzzyMatch.fuzzyTailMatch', function() {
     it('should match aaabbb with dddaaaccc only by aaa', function(done) {
       var search = 'aaabbb';
-      var target = 'aaaccc';
+      var target = 'dddaaaccc';
       var result = fuzzyMatch.fuzzyTailMatch(search, target);
       expect(result).eql({
         matched_length_of_search: 3,
         matched: 'aaa',
-        start_index_in_target: 0
+        start_index_in_target: 3
       });
       done();
     });
@@ -45,7 +45,7 @@ describe('fuzzyMatch', function() {
       done();
     });
 
-    it('should ignore diffrence between space and underscore', function(done) {
+    it('should ignore difference between a space and an underscore', function(done) {
       var search = 'Aaaabbbbcc_dddeeefff';
       var target = 'Aaaabbbbcc dddeeefff';
       var result = fuzzyMatch.fuzzyTailMatch(search, target);
@@ -57,13 +57,26 @@ describe('fuzzyMatch', function() {
       done();
     });
 
-    it('should not ignore diffrence between characters other than space and underscore', function(done) {
+    it('should not ignore difference between characters other than a space and an underscore', function(done) {
       var search = 'Aaaabbbbcc_dddeeefff';
       var target = 'Aaaabbbbccあdddeeefff';
       var result = fuzzyMatch.fuzzyTailMatch(search, target);
       expect(result).eql({
         matched_length_of_search: 10,
         matched: 'Aaaabbbbcc',
+        start_index_in_target: 0
+      });
+      done();
+    });
+
+
+    it('should not cause an infinite loop', function(done) {
+      var search = '私たちの想い ||対話しませんか  木下電子工業株式会社';
+      var target = '私たちの想い || 木下電子工業株式会社';
+      var result = fuzzyMatch.fuzzyTailMatch(search, target);
+      expect(result).eql({
+        matched_length_of_search: 9,
+        matched: '私たちの想い ||',
         start_index_in_target: 0
       });
       done();

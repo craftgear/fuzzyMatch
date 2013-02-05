@@ -6,7 +6,7 @@ var fuzzyMatch = {
     if (search < minimum_char_length) {
       return false;
     }
-    if (ignore_difference_regexp_char_set === null) {
+    if (!ignore_difference_regexp_char_set) {
       ignore_difference_regexp_char_set = '[\\s_]'; //default we consider space and underscore as the same thing
     }
     var len = search.length;
@@ -14,7 +14,14 @@ var fuzzyMatch = {
     var start_index_in_target = null;
     var matched_length_of_search = 0;
 
+    var max_loop = 9;
+    var loop_counter = 0;
+
     while (true) {
+      if (loop_counter >= max_loop) {
+        console.log('too many loop');
+        return false;
+      }
 
       if (target.indexOf(search) > -1) {
         return {
@@ -38,7 +45,8 @@ var fuzzyMatch = {
         if (target.indexOf(search.substr(0, matched_length_of_search)) > -1 && target.indexOf(search.substr(0, matched_length_of_search + 1)) === -1) {
 
           //now we go crazy!
-          var regexp = new RegExp(search.substr(0, matched_length_of_search) + ignore_difference_regexp_char_set);
+          var _matched_portion = search.substr(0, matched_length_of_search).replace(/\\/g, '\\\\').replace(/\|/g, '\\|').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+          var regexp = new RegExp(_matched_portion + ignore_difference_regexp_char_set);
           if (search.substr(matched_length_of_search, 1).match(ignore_difference_regexp_char_set) !== null && target.match(regexp) !== null) {
             search = target.match(regexp)[0] + search.substr(matched_length_of_search + 1);
             jump = parseInt((search.length - matched_length_of_search) / 2, 10);
@@ -54,6 +62,7 @@ var fuzzyMatch = {
           jump = 1;
         }
       }
+      loop_counter++;
     }
   },
 
